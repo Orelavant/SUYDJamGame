@@ -1,22 +1,34 @@
 fileFormatVersion: 2
-guid: 53acacb1e62a2fa418354fc205ebd93a
+guid: 9b9702b9b4fb56e4889e833e14be6ceb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4312183417328508886
-    second: mantis_tileset-Sheet_0
+      213: 1868065087829926639
+    second: coloredBuckets-Sheet_0
   - first:
-      213: -7969351050375465979
-    second: mantis_tileset-Sheet_1
+      213: 8689568376644934494
+    second: coloredBuckets-Sheet_1
   - first:
-      213: 7885031859129404976
-    second: mantis_tileset-Sheet_2
+      213: -2398521287911838358
+    second: coloredBuckets-Sheet_2
   - first:
-      213: -965386733033863873
-    second: mantis_tileset-Sheet_3
+      213: 2147076237874124225
+    second: coloredBuckets-Sheet_3
   - first:
-      213: 378346599650021976
-    second: mantis_tileset-Sheet_4
+      213: -3245777871186160894
+    second: coloredBuckets-Sheet_4
+  - first:
+      213: -5059929524478431136
+    second: coloredBuckets-Sheet_5
+  - first:
+      213: -3777534013231110850
+    second: coloredBuckets-Sheet_6
+  - first:
+      213: -8369122476165428229
+    second: coloredBuckets-Sheet_7
+  - first:
+      213: 7612571886090607062
+    second: coloredBuckets-Sheet_8
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -60,7 +72,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 1
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,7 +125,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mantis_tileset-Sheet_0
+      name: coloredBuckets-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -127,14 +139,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54a3118b2845f3a47a82a757c4f53f7b
-      internalID: -4312183417328508886
+      spriteID: df685667da5883d498737033d42145e3
+      internalID: 1868065087829926639
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mantis_tileset-Sheet_1
+      name: coloredBuckets-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 641de637fa95c8445a0c37c0ff64fd1a
+      internalID: 8689568376644934494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: coloredBuckets-Sheet_2
       rect:
         serializedVersion: 2
         x: 32
@@ -148,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4590a56ef0294114b9af2b7f858c1546
-      internalID: -7969351050375465979
+      spriteID: acaee89a6fa49284881ee22576fe874e
+      internalID: -2398521287911838358
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mantis_tileset-Sheet_2
+      name: coloredBuckets-Sheet_3
       rect:
         serializedVersion: 2
         x: 0
@@ -169,14 +202,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4674048b2a85b124a8637ce56734ebf0
-      internalID: 7885031859129404976
+      spriteID: 27d2e4f6a7a4c5347bf6c47d3d5449e0
+      internalID: 2147076237874124225
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mantis_tileset-Sheet_3
+      name: coloredBuckets-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbcf8138551c671459c850c306e7f46b
+      internalID: -3245777871186160894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: coloredBuckets-Sheet_5
       rect:
         serializedVersion: 2
         x: 32
@@ -190,14 +244,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 48b270b54f6bfbb45ada20e5fc71917d
-      internalID: -965386733033863873
+      spriteID: bc63c1c120a04bb428ba9915151df9db
+      internalID: -5059929524478431136
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: mantis_tileset-Sheet_4
+      name: coloredBuckets-Sheet_6
       rect:
         serializedVersion: 2
         x: 0
@@ -211,8 +265,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6e62603289697f45a0870e9f41f3f5e
-      internalID: 378346599650021976
+      spriteID: 21b69ce5621ed7940be3e5304ed81f00
+      internalID: -3777534013231110850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: coloredBuckets-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87905d5622aafcd48b4c9581eed7e7cc
+      internalID: -8369122476165428229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: coloredBuckets-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1cb5efec69e5af4198a4c6faa441329
+      internalID: 7612571886090607062
       vertices: []
       indices: 
       edges: []
