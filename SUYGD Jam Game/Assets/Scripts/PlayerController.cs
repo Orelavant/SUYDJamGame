@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI playerColorsText;
     public GameObject crazyBuckets;
 
-    private bool crazyIsActive = false;
+    private bool crazyIsActive = true;
 
     // Color storage list
     List<string> colorStorage = new List<string>();
