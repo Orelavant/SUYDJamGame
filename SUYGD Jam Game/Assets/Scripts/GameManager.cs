@@ -23,9 +23,6 @@ public class GameManager : MonoBehaviour
     }
 
     private void Orders() {
-        // TODO Fix this error.
-
-
         // Values to be excluded
         List<int> exclude = new List<int>();
 
@@ -39,7 +36,7 @@ public class GameManager : MonoBehaviour
                 randIndex = Random.Range(0, colors.Length);
             }
             exclude.Add(randIndex);
-            currOrder[i] = colors[randIndex];
+            currOrder.Add(colors[randIndex]);
         }
 
         orders.Add(currOrder);

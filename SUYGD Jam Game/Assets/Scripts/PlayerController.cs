@@ -21,13 +21,11 @@ public class PlayerController : MonoBehaviour
 
     // Color and orders storage
     List<string> colorStorage = new List<string>();
-    List<List<string>> orders;
     
     private bool crazyIsActive = true;
 
     private void Start() {
         gameManagerScript = eventSystem.GetComponent<GameManager>();
-        orders = gameManagerScript.orders;
     }
 
     // Update is called once per frame
@@ -78,11 +76,12 @@ public class PlayerController : MonoBehaviour
         bool deliverStatus = false;
         if (colorStorage.Count == 3) {
             foreach(string color in colorStorage) {
-                if (orders[0].Contains(color)) {
+                if (gameManagerScript.orders[0].Contains(color)) {
                     deliverStatus = true;
+                } else {
+                    deliverStatus = false;
+                    break;
                 }
-                deliverStatus = false;
-                break;
             }
         }
 
@@ -90,7 +89,17 @@ public class PlayerController : MonoBehaviour
         if (deliverStatus) {
             colorStorage.Clear();
             playerColorsText.text = "Colors:";
-            //TODO: REMOVE TOP ORDER AND ADJUST ORDER TEXT.
+            gameManagerScript.orders.Remove(gameManagerScript.orders[0]);
+
+            //Adjusting order text to remove top order.
+            int i = 7;
+            char c = gameManagerScript.orderText.text[i];
+            while (!(c.Equals(']'))) {
+                c = gameManagerScript.orderText.text[i];
+                i++;
+            }
+
+            gameManagerScript.orderText.text = "Orders:" + gameManagerScript.orderText.text.Substring(i);
         }
     }
 }
