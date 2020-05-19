@@ -210,6 +210,7 @@ MonoBehaviour:
   - black
   - brown
   orderText: {fileID: 254598398}
+  orderDelay: 7
 --- !u!1001 &214829088
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1068,8 +1069,9 @@ GameObject:
   - component: {fileID: 647192554}
   - component: {fileID: 647192553}
   - component: {fileID: 647192555}
+  - component: {fileID: 647192556}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1140,6 +1142,32 @@ Transform:
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &647192555
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647192552}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!61 &647192556
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3234,6 +3262,7 @@ MonoBehaviour:
   canvas: {fileID: 647192552}
   playerColorsText: {fileID: 1244671785}
   crazyBuckets: {fileID: 1205454238}
+  eventSystem: {fileID: 105104066}
 --- !u!50 &2026070111
 Rigidbody2D:
   serializedVersion: 4

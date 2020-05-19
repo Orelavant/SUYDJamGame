@@ -16,13 +16,18 @@ public class PlayerController : MonoBehaviour
     public GameObject canvas;
     public TextMeshProUGUI playerColorsText;
     public GameObject crazyBuckets;
+    public GameObject eventSystem;
+    private GameManager gameManagerScript;
 
+    // Color and orders storage
+    List<string> colorStorage = new List<string>();
+    List<List<string>> orders;
+    
     private bool crazyIsActive = true;
 
-    // Color storage list
-    List<string> colorStorage = new List<string>();
-
     private void Start() {
+        gameManagerScript = eventSystem.GetComponent<GameManager>();
+        orders = gameManagerScript.orders;
     }
 
     // Update is called once per frame
@@ -52,8 +57,10 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject) {
+        if (collision.gameObject && collision.gameObject != canvas) {
             UpdateColors(collision.gameObject.name);
+        } else if (collision.gameObject == canvas) {
+            SendOrder();
         }
     }
 
@@ -62,6 +69,28 @@ public class PlayerController : MonoBehaviour
         if (colorStorage.Count < 3) {
             colorStorage.Add(color);
             playerColorsText.text += " " + color;
+        }
+    }
+
+    private void SendOrder() {
+        // If colors are 3 and equal to the top order, deliver.
+        // If any color is not present in the order, break;
+        bool deliverStatus = false;
+        if (colorStorage.Count == 3) {
+            foreach(string color in colorStorage) {
+                if (orders[0].Contains(color)) {
+                    deliverStatus = true;
+                }
+                deliverStatus = false;
+                break;
+            }
+        }
+
+        //Clear storage, reset colors text, remove top order, and adjust order text
+        if (deliverStatus) {
+            colorStorage.Clear();
+            playerColorsText.text = "Colors:";
+            //TODO: REMOVE TOP ORDER AND ADJUST ORDER TEXT.
         }
     }
 }
