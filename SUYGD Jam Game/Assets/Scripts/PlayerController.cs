@@ -24,15 +24,42 @@ public class PlayerController : MonoBehaviour
 
     // Color storage and ref to currColor being touched.
     List<string> colorStorage = new List<string>();
+    public GameObject[] paintStorage;
     private string currColor;
-    
+
+    //Colors
+    private static Color blue = new Color(48 / 255f, 96 / 255f, 130 / 255f);
+    private static Color purple = new Color(118 / 255f, 66 / 255f, 138 / 255f);
+    private static Color red = new Color(172 / 255f, 50 / 255f, 50 / 255f);
+    private static Color orange = new Color(223 / 255f, 113 / 255f, 38 / 255f);
+    private static Color yellow = new Color(251 / 255f, 242 / 255f, 54 / 255f);
+    private static Color green = new Color(106 / 255f, 190 / 255f, 48 / 255f);
+    private static Color pink = new Color(215 / 255f, 123 / 255f, 186 / 255f);
+    private static Color black = new Color(0f, 0f, 0f);
+    private static Color brown = new Color(102 / 255f, 57 / 255f, 49 / 255f);
+    private static Color grey = new Color(173 / 255f, 173 / 255f, 173 / 255f);
+    private Hashtable colorHash = new Hashtable();
+
+
     //Booleans
     private bool crazyIsActive = true;
     private bool touchPaint = false;
+    private bool touchCanvas = false;
 
     private void Start() {
         gameManagerScript = eventSystem.GetComponent<GameManager>();
         rb = GetComponent<Rigidbody2D>();
+
+        // Colors
+        colorHash.Add("blue", blue);
+        colorHash.Add("purple", purple);
+        colorHash.Add("red", red);
+        colorHash.Add("orange", orange);
+        colorHash.Add("yellow", yellow);
+        colorHash.Add("green", green);
+        colorHash.Add("pink", pink);
+        colorHash.Add("black", black);
+        colorHash.Add("brown", brown);
     }
 
     // Update is called once per frame
@@ -53,14 +80,18 @@ public class PlayerController : MonoBehaviour
         }
 
         //Interact
-        if (Input.GetKeyDown("j") && touchPaint) {
-            UpdateColors(currColor);
+        if (Input.GetKeyDown("j")) {
+            if (touchPaint) {
+                UpdateColors(currColor);
+            } else if (touchCanvas) {
+                SendOrder();
+
+            }
         }
 
         //Dump paint
         if (Input.GetKeyDown("k")) {
-            colorStorage.Clear();
-            playerColorsText.text = "Colors:";
+            Dump();
         }
 
         //Boost
@@ -85,13 +116,15 @@ public class PlayerController : MonoBehaviour
             touchPaint = true;
             currColor = collision.gameObject.name;
         } else if (collision.gameObject == canvas) {
-            SendOrder();
+            touchCanvas = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject != canvas) {
             touchPaint = false;
+        } else {
+            touchCanvas = false;
         }
     }
 
@@ -99,6 +132,7 @@ public class PlayerController : MonoBehaviour
         //Update color storage and text.
         if (colorStorage.Count < 3) {
             colorStorage.Add(color);
+            paintStorage[colorStorage.Count - 1].GetComponent<Renderer>().material.color = (Color)colorHash[color];
             playerColorsText.text += " " + color;
         }
     }
@@ -122,8 +156,7 @@ public class PlayerController : MonoBehaviour
 
         //Clear storage, reset colors text, remove top order, and adjust order text
         if (deliverStatus) {
-            colorStorage.Clear();
-            playerColorsText.text = "Colors:";
+            Dump();
             orderList.Remove(orderList[0]);
 
             //Adjusting order text to remove top order.
@@ -136,5 +169,13 @@ public class PlayerController : MonoBehaviour
 
             gameManagerScript.orderText.text = "Orders:" + gameManagerScript.orderText.text.Substring(i);
         }
+    }
+
+    private void Dump() {
+        colorStorage.Clear();
+        foreach (GameObject paintCircle in paintStorage) {
+            paintCircle.GetComponent<Renderer>().material.color = grey;
+        }
+        playerColorsText.text = "Colors:";
     }
 }
