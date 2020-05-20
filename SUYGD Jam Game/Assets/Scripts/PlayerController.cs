@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private static Color black = new Color(0f, 0f, 0f);
     private static Color brown = new Color(102 / 255f, 57 / 255f, 49 / 255f);
     private static Color grey = new Color(173 / 255f, 173 / 255f, 173 / 255f);
+    private static Color white = new Color(255 / 255f, 255 / 255f, 255 / 255f);
     private Hashtable colorHash = new Hashtable();
 
 
@@ -174,7 +175,7 @@ public class PlayerController : MonoBehaviour
     private void Dump() {
         colorStorage.Clear();
         foreach (GameObject paintCircle in paintStorage) {
-            paintCircle.GetComponent<Renderer>().material.color = grey;
+            paintCircle.GetComponent<Renderer>().material.color = white;
         }
         playerColorsText.text = "Colors:";
     }
