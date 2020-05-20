@@ -6,11 +6,14 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
+    // Movement
     public float speed = 5f;
-
-    public Rigidbody2D rb;
-
+    private Rigidbody2D rb;
     Vector2 movement;
+
+    // Dash
+    public float boostForce;
+    private bool boostBool = true;
 
     //References to game objects
     public GameObject canvas;
@@ -19,13 +22,17 @@ public class PlayerController : MonoBehaviour
     public GameObject eventSystem;
     private GameManager gameManagerScript;
 
-    // Color and orders storage
+    // Color storage and ref to currColor being touched.
     List<string> colorStorage = new List<string>();
+    private string currColor;
     
+    //Booleans
     private bool crazyIsActive = true;
+    private bool touchPaint = false;
 
     private void Start() {
         gameManagerScript = eventSystem.GetComponent<GameManager>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -33,14 +40,6 @@ public class PlayerController : MonoBehaviour
         // Input
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
-
-    }
-
-    void FixedUpdate() {
-        //Movement
-        if (crazyIsActive) {
-            rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
-        }
 
         //View switch
         if (Input.GetKeyDown("space")) {
@@ -52,13 +51,47 @@ public class PlayerController : MonoBehaviour
                 crazyIsActive = true;
             }
         }
+
+        //Interact
+        if (Input.GetKeyDown("j") && touchPaint) {
+            UpdateColors(currColor);
+        }
+
+        //Dump paint
+        if (Input.GetKeyDown("k")) {
+            colorStorage.Clear();
+            playerColorsText.text = "Colors:";
+        }
+
+        //Boost
+        if (Input.GetKeyDown("l")) {
+            boostBool = true;
+        }
+    }
+
+    void FixedUpdate() {
+        //Movement
+        if (crazyIsActive) {
+            rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+            if (boostBool) {
+                rb.MovePosition(rb.position + movement * boostForce);
+                boostBool = false;
+            }
+        } 
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject && collision.gameObject != canvas) {
-            UpdateColors(collision.gameObject.name);
+            touchPaint = true;
+            currColor = collision.gameObject.name;
         } else if (collision.gameObject == canvas) {
             SendOrder();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        if (collision.gameObject != canvas) {
+            touchPaint = false;
         }
     }
 
@@ -71,12 +104,14 @@ public class PlayerController : MonoBehaviour
     }
 
     private void SendOrder() {
+        List<List<string>> orderList = gameManagerScript.orders;
+
         // If colors are 3 and equal to the top order, deliver.
         // If any color is not present in the order, break;
         bool deliverStatus = false;
         if (colorStorage.Count == 3) {
-            foreach(string color in colorStorage) {
-                if (gameManagerScript.orders[0].Contains(color)) {
+            for (int i = 0; i < colorStorage.Count; i++) {
+                if (orderList[0][i].Equals(colorStorage[i])) {
                     deliverStatus = true;
                 } else {
                     deliverStatus = false;
@@ -89,7 +124,7 @@ public class PlayerController : MonoBehaviour
         if (deliverStatus) {
             colorStorage.Clear();
             playerColorsText.text = "Colors:";
-            gameManagerScript.orders.Remove(gameManagerScript.orders[0]);
+            orderList.Remove(orderList[0]);
 
             //Adjusting order text to remove top order.
             int i = 7;
