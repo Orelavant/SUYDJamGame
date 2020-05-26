@@ -13,10 +13,12 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI orderText;
     public GameObject titleScreen;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;
     public TextMeshProUGUI gameOverText;
-    public Button restartButton;
+    public TextMeshProUGUI finalScoreText;
     public Image orderUI;
     public List<Image> ordersUI;
+    public GameObject[] coloredBuckets;
 
     // Modulate for difficulty
     [SerializeField] private int orderDelay = 8;
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float waitTime = 2;
     [SerializeField] private int repeatNum = 4;
     [SerializeField] private int tooManyOrders = 1;
+    [SerializeField] private int time = 60;
 
     // Keep track of orders and their score. topOrderDelay keeps track of where to place the new order.
     public List<List<string>> orders = new List<List<string>>();
@@ -47,8 +50,10 @@ public class GameManager : MonoBehaviour
     public bool isGameActive;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        //Getting positions of buckets and placing them randomly
+        PlaceBuckets();
+
         // Colors to hashtable.
         colorHash.Add("blue", blue);
         colorHash.Add("purple", purple);
@@ -70,11 +75,14 @@ public class GameManager : MonoBehaviour
         // Start spawning orders
         InvokeRepeating("Orders", 2, orderDelay);
 
+        // Start timer and set score text.
+        timerText.text += " " + time;
+        StartCoroutine(Timer());
         scoreText.text += " 0";
     }
 
     private void Update() {
-        if (orders.Count > tooManyOrders) {
+        if (orders.Count > tooManyOrders && isGameActive || time == 0 && isGameActive) {
             GameOver();
         }
     }
@@ -140,6 +148,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator Timer() {
+        while (true && time > 0) {
+            yield return new WaitForSecondsRealtime(1);
+            time--;
+            timerText.text = "Time: " + time;
+        }
+    }
+
     public void UpdateScore(int addScore) {
         score += addScore;
         scoreText.text = "Score: " + score;
@@ -147,11 +163,33 @@ public class GameManager : MonoBehaviour
 
     private void GameOver() {
         isGameActive = false;
+        finalScoreText.text += score;
         gameOverText.gameObject.SetActive(true);
         CancelInvoke();
     }
 
     public void RestartGame() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void PlaceBuckets() {
+        // Getting bucket positions
+        List<Vector3> bucketPositions = new List<Vector3>();
+        foreach(GameObject bucket in coloredBuckets) {
+            bucketPositions.Add(bucket.transform.position);
+        }
+
+        // Assigning each of the buckets to a random (but unique) position
+        // Gets random unique integer from 0 to # of buckets. Then assigns a bucket to random position using the integer.
+        List<int> exclude = new List<int>();
+        for(int i = 0; i < coloredBuckets.Length; i++) {
+            int randIndex = Random.Range(0, coloredBuckets.Length);
+            while (exclude.Contains(randIndex)) {
+                randIndex = Random.Range(0, coloredBuckets.Length);
+            }
+            GameObject currBucket = coloredBuckets[i];
+            currBucket.transform.position = bucketPositions.ElementAt(randIndex);
+            exclude.Add(randIndex);
+        }
     }
 }
