@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
+using System.Reflection;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,11 +12,15 @@ public class GameManager : MonoBehaviour
     public string[] textColors;
     public TextMeshProUGUI orderText;
 
+    public Image orderUI;
+    public List<Image> ordersUI;
+
     // Modulate for harder game
     [SerializeField] private int orderDelay = 7;
 
     // Keep track of orders
     public List<List<string>> orders = new List<List<string>>();
+    public int topOrder = 0;
 
     //Colors
     private static Color blue = new Color(48 / 255f, 96 / 255f, 130 / 255f);
@@ -49,6 +55,14 @@ public class GameManager : MonoBehaviour
     }
 
     private void Orders() {
+        Image newOrder = ordersUI[topOrder];
+
+        // Because orderUI is funky, the new color placement needs to be 1 + the top order unless order.Count is at 0;
+        if (orders.Count != 0) {
+            newOrder = ordersUI[topOrder + 1];
+        }
+        
+
         // Values to be excluded
         List<int> exclude = new List<int>();
 
@@ -63,8 +77,10 @@ public class GameManager : MonoBehaviour
             }
             exclude.Add(randIndex);
             currOrder.Add(textColors[randIndex]);
-        }
 
+            // Update orderUI
+            newOrder.transform.GetComponentsInChildren<Image>()[i+1].color = (Color)colorHash[currOrder.ElementAt(i)];
+        }
         orders.Add(currOrder);
         orderText.text += orderToString(currOrder);
     }

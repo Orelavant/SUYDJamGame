@@ -114,14 +114,12 @@ public class PlayerController : MonoBehaviour
     }
 
     private void SendOrder() {
-        List<List<string>> orderList = gameManagerScript.orders;
-
         // If colors are 3 and equal to the top order, deliver.
         // If any color is not present in the order, break;
         bool deliverStatus = false;
         if (colorStorage.Count == 3) {
             for (int i = 0; i < colorStorage.Count; i++) {
-                if (orderList[0][i].Equals(colorStorage[i])) {
+                if (gameManagerScript.orders[0][i].Equals(colorStorage[i])) {
                     deliverStatus = true;
                 } else {
                     deliverStatus = false;
@@ -133,7 +131,7 @@ public class PlayerController : MonoBehaviour
         //Clear storage, reset colors text, remove top order, and adjust order text
         if (deliverStatus) {
             Dump();
-            orderList.Remove(orderList[0]);
+            gameManagerScript.orders.RemoveAt(0);
 
             //Adjusting order text to remove top order.
             int i = 7;
@@ -142,8 +140,19 @@ public class PlayerController : MonoBehaviour
                 c = gameManagerScript.orderText.text[i];
                 i++;
             }
-
             gameManagerScript.orderText.text = "Orders:" + gameManagerScript.orderText.text.Substring(i);
+
+            // Setting orderUI
+            i = 0;
+            for (; i < 3; i++) {
+                gameManagerScript.ordersUI[gameManagerScript.topOrder].GetComponentsInChildren<Image>()[i + 1].color = Color.white;
+            }
+            //Increasing top order
+            if (gameManagerScript.orders.Count != 0) {
+                gameManagerScript.topOrder++;
+            } else {
+                gameManagerScript.topOrder = 0;
+            }
         }
     }
 
