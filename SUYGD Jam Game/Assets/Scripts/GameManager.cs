@@ -11,9 +11,10 @@ public class GameManager : MonoBehaviour
     // References
     public string[] textColors;
     public TextMeshProUGUI orderText;
+    public GameObject titleScreen;
+    public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
     public Button restartButton;
-
     public Image orderUI;
     public List<Image> ordersUI;
 
@@ -25,10 +26,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int repeatNum = 4;
     [SerializeField] private int tooManyOrders = 1;
 
-    // Keep track of orders. topOrderDelay keeps track of where to place the new order.
+    // Keep track of orders and their score. topOrderDelay keeps track of where to place the new order.
     public List<List<string>> orders = new List<List<string>>();
     public int topOrder = 0;
     public int topOrderDelay = 0;
+    public int score;
 
     //Colors
     private static Color blue = new Color(48 / 255f, 96 / 255f, 130 / 255f);
@@ -47,11 +49,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        isGameActive = true;
-
-        // Start spawning orders
-        InvokeRepeating("Orders", 2, orderDelay);
-
         // Colors to hashtable.
         colorHash.Add("blue", blue);
         colorHash.Add("purple", purple);
@@ -62,6 +59,18 @@ public class GameManager : MonoBehaviour
         colorHash.Add("pink", pink);
         colorHash.Add("black", black);
         colorHash.Add("brown", brown);
+    }
+
+    public void StartGame() {
+        // Remove title text
+        titleScreen.gameObject.SetActive(false);
+
+        isGameActive = true;
+
+        // Start spawning orders
+        InvokeRepeating("Orders", 2, orderDelay);
+
+        scoreText.text += " 0";
     }
 
     private void Update() {
@@ -129,6 +138,11 @@ public class GameManager : MonoBehaviour
             newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n" + currValue;
             repeatNum--;
         }
+    }
+
+    public void UpdateScore(int addScore) {
+        score += addScore;
+        scoreText.text = "Score: " + score;
     }
 
     private void GameOver() {

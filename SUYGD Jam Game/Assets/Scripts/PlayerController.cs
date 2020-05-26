@@ -153,6 +153,11 @@ public class PlayerController : MonoBehaviour
             for (; i < 3; i++) {
                 gameManagerScript.ordersUI[gameManagerScript.topOrder].GetComponentsInChildren<Image>()[i + 1].color = Color.white;
             }
+
+            // Getting score from topOrder. Inefficient since getting score from text.
+            int currScore = int.Parse(gameManagerScript.ordersUI.ElementAt(gameManagerScript.topOrder).transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text.Substring(9));
+            gameManagerScript.UpdateScore(currScore);
+
             // Adjusting topOrder text
             gameManagerScript.ordersUI.ElementAt(gameManagerScript.topOrder).transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n";
 
