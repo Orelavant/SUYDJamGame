@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class PlayerController : MonoBehaviour
 {
@@ -147,11 +148,15 @@ public class PlayerController : MonoBehaviour
             for (; i < 3; i++) {
                 gameManagerScript.ordersUI[gameManagerScript.topOrder].GetComponentsInChildren<Image>()[i + 1].color = Color.white;
             }
-            //Increasing top order
+            // Adjusting topOrder text
+            gameManagerScript.ordersUI.ElementAt(gameManagerScript.topOrder).transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n";
+
+            // Increasing top order
             if (gameManagerScript.orders.Count != 0) {
                 gameManagerScript.topOrder++;
             } else {
                 gameManagerScript.topOrder = 0;
+                gameManagerScript.topOrderDelay = 0;
             }
         }
     }

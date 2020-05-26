@@ -16,11 +16,13 @@ public class GameManager : MonoBehaviour
     public List<Image> ordersUI;
 
     // Modulate for harder game
-    [SerializeField] private int orderDelay = 7;
+    [SerializeField] private int orderDelay = 8;
+    public int startingValue = 400;
 
-    // Keep track of orders
+    // Keep track of orders. topOrderDelay keeps track of where to place the new order.
     public List<List<string>> orders = new List<List<string>>();
     public int topOrder = 0;
+    public int topOrderDelay = 0;
 
     //Colors
     private static Color blue = new Color(48 / 255f, 96 / 255f, 130 / 255f);
@@ -55,13 +57,19 @@ public class GameManager : MonoBehaviour
     }
 
     private void Orders() {
-        Image newOrder = ordersUI[topOrder];
+        //Create new order
+        Image newOrder = ordersUI[0];
 
-        // Because orderUI is funky, the new color placement needs to be 1 + the top order unless order.Count is at 0;
+        // Because orderUI is funky, the new color placement needs to be topOrderDelay unless order.Count is at 0
         if (orders.Count != 0) {
-            newOrder = ordersUI[topOrder + 1];
+            newOrder = ordersUI[topOrderDelay];
         }
-        
+
+        // Add payment text to order
+        newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text += "" + startingValue;
+
+        // Start decreasing value of the order.
+        StartCoroutine(decreaseValue(newOrder, 2, 4));
 
         // Values to be excluded
         List<int> exclude = new List<int>();
@@ -81,8 +89,10 @@ public class GameManager : MonoBehaviour
             // Update orderUI
             newOrder.transform.GetComponentsInChildren<Image>()[i+1].color = (Color)colorHash[currOrder.ElementAt(i)];
         }
+        // Add to order text and increment topOrderDelay.
         orders.Add(currOrder);
         orderText.text += orderToString(currOrder);
+        topOrderDelay++;
     }
 
     private string orderToString(List<string> currOrder) {
@@ -94,5 +104,17 @@ public class GameManager : MonoBehaviour
 
         orderString += " ]";
         return orderString;
+    }
+
+    private IEnumerator decreaseValue(Image newOrder, float waitTime, int repeatNum) {
+        int currValue = startingValue;
+
+        while (repeatNum > 0) {
+            while (true) {
+                yield return new WaitForSecondsRealtime(waitTime);
+                currValue -= 100;
+                newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n" + currValue;
+            }
+        }
     }
 }
