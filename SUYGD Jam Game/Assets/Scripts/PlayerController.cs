@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
             movement.x = 0;
             movement.y = 0;
         }
+
         //View switch
         if (Input.GetKeyDown("space") && gameManagerScript.isGameActive) {
             if (crazyIsActive) {

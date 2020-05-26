@@ -457,7 +457,7 @@ MonoBehaviour:
   minusValue: 200
   waitTime: 2
   repeatNum: 4
-  tooManyOrders: 1
+  tooManyOrders: 10
   topOrder: 0
   topOrderDelay: 0
   isGameActive: 0

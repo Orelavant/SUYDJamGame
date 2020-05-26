@@ -76,11 +76,11 @@ public class GameManager : MonoBehaviour
 
         // Because orderUI is funky, the new color placement needs to be topOrderDelay unless order.Count is at 0
         if (orders.Count != 0) {
-            newOrder = ordersUI[topOrderDelay];
+            newOrder = ordersUI[(topOrderDelay) % ordersUI.Count];
         }
 
         // Add payment text to order
-        newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text += "" + startingValue;
+        newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n" + startingValue;
 
         // Start decreasing value of the order.
         StartCoroutine(decreaseValue(newOrder, waitTime, repeatNum));
@@ -123,12 +123,11 @@ public class GameManager : MonoBehaviour
     private IEnumerator decreaseValue(Image newOrder, float waitTime, int repeatNum) {
         int currValue = startingValue;
 
-        while (repeatNum > 0) {
-            while (true) {
-                yield return new WaitForSecondsRealtime(waitTime);
-                currValue -= minusValue;
-                newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n" + currValue;
-            }
+        while (true && repeatNum > 0) {
+            yield return new WaitForSecondsRealtime(waitTime);
+            currValue -= minusValue;
+            newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n" + currValue;
+            repeatNum--;
         }
     }
 
