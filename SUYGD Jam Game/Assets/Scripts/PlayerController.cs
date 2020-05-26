@@ -40,13 +40,17 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() { 
+    void Update() {
         // Input
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-
+        if (gameManagerScript.isGameActive) {
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
+        } else {
+            movement.x = 0;
+            movement.y = 0;
+        }
         //View switch
-        if (Input.GetKeyDown("space")) {
+        if (Input.GetKeyDown("space") && gameManagerScript.isGameActive) {
             if (crazyIsActive) {
                 crazyBuckets.SetActive(false);
                 crazyIsActive = false;
@@ -57,7 +61,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Interact
-        if (Input.GetKeyDown("j")) {
+        if (Input.GetKeyDown("j") && gameManagerScript.isGameActive) {
             if (touchPaint) {
                 UpdateColors(currColor);
             } else if (touchCanvas) {
@@ -67,12 +71,12 @@ public class PlayerController : MonoBehaviour
         }
 
         //Dump paint
-        if (Input.GetKeyDown("k")) {
+        if (Input.GetKeyDown("k") && gameManagerScript.isGameActive) {
             Dump();
         }
 
         //Boost
-        if (Input.GetKeyDown("l")) {
+        if (Input.GetKeyDown("l") && gameManagerScript.isGameActive) {
             boostBool = true;
         }
     }

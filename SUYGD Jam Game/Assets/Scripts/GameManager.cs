@@ -4,20 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
-using System.Reflection;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     // References
     public string[] textColors;
     public TextMeshProUGUI orderText;
+    public TextMeshProUGUI gameOverText;
+    public Button restartButton;
 
     public Image orderUI;
     public List<Image> ordersUI;
 
-    // Modulate for harder game
+    // Modulate for difficulty
     [SerializeField] private int orderDelay = 8;
-    public int startingValue = 400;
+    [SerializeField] private int startingValue = 1000;
+    [SerializeField] private int minusValue = 200;
+    [SerializeField] private float waitTime = 2;
+    [SerializeField] private int repeatNum = 4;
+    [SerializeField] private int tooManyOrders = 1;
 
     // Keep track of orders. topOrderDelay keeps track of where to place the new order.
     public List<List<string>> orders = new List<List<string>>();
@@ -36,12 +42,14 @@ public class GameManager : MonoBehaviour
     private static Color brown = new Color(102 / 255f, 57 / 255f, 49 / 255f);
     public Hashtable colorHash = new Hashtable();
 
-    //Paint Storage sprite
-    public GameObject paintStorageIcon;
+    public bool isGameActive;
 
     // Start is called before the first frame update
     void Start()
     {
+        isGameActive = true;
+
+        // Start spawning orders
         InvokeRepeating("Orders", 2, orderDelay);
 
         // Colors to hashtable.
@@ -54,6 +62,12 @@ public class GameManager : MonoBehaviour
         colorHash.Add("pink", pink);
         colorHash.Add("black", black);
         colorHash.Add("brown", brown);
+    }
+
+    private void Update() {
+        if (orders.Count > tooManyOrders) {
+            GameOver();
+        }
     }
 
     private void Orders() {
@@ -69,7 +83,7 @@ public class GameManager : MonoBehaviour
         newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text += "" + startingValue;
 
         // Start decreasing value of the order.
-        StartCoroutine(decreaseValue(newOrder, 2, 4));
+        StartCoroutine(decreaseValue(newOrder, waitTime, repeatNum));
 
         // Values to be excluded
         List<int> exclude = new List<int>();
@@ -87,7 +101,7 @@ public class GameManager : MonoBehaviour
             currOrder.Add(textColors[randIndex]);
 
             // Update orderUI
-            newOrder.transform.GetComponentsInChildren<Image>()[i+1].color = (Color)colorHash[currOrder.ElementAt(i)];
+            newOrder.transform.GetComponentsInChildren<Image>()[i + 1].color = (Color)colorHash[currOrder.ElementAt(i)];
         }
         // Add to order text and increment topOrderDelay.
         orders.Add(currOrder);
@@ -112,9 +126,19 @@ public class GameManager : MonoBehaviour
         while (repeatNum > 0) {
             while (true) {
                 yield return new WaitForSecondsRealtime(waitTime);
-                currValue -= 100;
+                currValue -= minusValue;
                 newOrder.transform.GetComponentsInChildren<TextMeshProUGUI>()[0].text = "Payment:\n" + currValue;
             }
         }
+    }
+
+    private void GameOver() {
+        isGameActive = false;
+        gameOverText.gameObject.SetActive(true);
+        CancelInvoke();
+    }
+
+    public void RestartGame() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
