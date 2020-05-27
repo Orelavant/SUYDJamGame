@@ -89,8 +89,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown("l") && Time.time > nextBoost && gameManagerScript.isGameActive) {
             nextBoost = Time.time + coolDown;
             boostBool = true;
-            print("boost");
-            boostEffect.Play();
         }
     }
 
@@ -99,6 +97,7 @@ public class PlayerController : MonoBehaviour
         rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
         if (boostBool) {
             rb.MovePosition(rb.position + movement * boostForce);
+            boostEffect.Play();
             boostBool = false;
         }
     }
