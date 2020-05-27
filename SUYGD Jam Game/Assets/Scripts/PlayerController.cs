@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private bool boostBool = true;
 
     //References to game objects
+    public Animator animator;
     public GameObject canvas;
     public TextMeshProUGUI playerColorsText;
     public GameObject crazyBuckets;
@@ -41,8 +42,13 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+
+        animator.SetFloat("horizontal", movement.x);
+        animator.SetFloat("vertical", movement.y);
+        animator.SetFloat("speed", movement.sqrMagnitude);
+
         // Input
-        if (gameManagerScript.isGameActive) {
+        if (gameManagerScript.isGameActive && crazyIsActive) {
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
         } else {
@@ -84,13 +90,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate() {
         //Movement
-        if (crazyIsActive) {
-            rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
-            if (boostBool) {
-                rb.MovePosition(rb.position + movement * boostForce);
-                boostBool = false;
-            }
-        } 
+        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+        if (boostBool) {
+            rb.MovePosition(rb.position + movement * boostForce);
+            boostBool = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
