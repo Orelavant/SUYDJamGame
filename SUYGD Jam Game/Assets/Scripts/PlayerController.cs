@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     // Dash
     public float boostForce;
     private bool boostBool = true;
+    [SerializeField] private float coolDown = 2f;
+    private float nextBoost;
 
     //References to game objects
     public Animator animator;
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public GameObject crazyBuckets;
     public GameObject eventSystem;
     private GameManager gameManagerScript;
+    public ParticleSystem boostEffect;
 
     // Color storage and ref to currColor being touched.
     List<string> colorStorage = new List<string>();
@@ -83,8 +86,11 @@ public class PlayerController : MonoBehaviour
         }
 
         //Boost
-        if (Input.GetKeyDown("l") && gameManagerScript.isGameActive) {
+        if (Input.GetKeyDown("l") && Time.time > nextBoost && gameManagerScript.isGameActive) {
+            nextBoost = Time.time + coolDown;
             boostBool = true;
+            print("boost");
+            boostEffect.Play();
         }
     }
 
